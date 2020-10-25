@@ -1,0 +1,119 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{xspace}
+\usepackage{color}
+\usepackage[yyyymmdd,hhmmss]{datetime}
+\usepackage{appendix}
+\usepackage{markdown}
+
+
+\addtolength{\oddsidemargin}{-.9in}
+\addtolength{\evensidemargin}{-.9in}
+\addtolength{\textwidth}{1.25in}
+\addtolength{\topmargin}{-.55in}
+\addtolength{\textheight}{1.5in}
+				
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{question}{Question}
+\newenvironment{proof}{\vspace{-1mm}\noindent{\bf {Proof.}}\ }{\hfill $\Box$\\}
+
+\newcommand\RF[1]{\textcolor{red}{RF: #1}}
+
+\title{DRAFT: Measuring Prediction Market Confidence}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+So far we have a couple ways to define confidence intervals on the nominal market prices in prediction markets.
+We may also have a reasonably principled way to pick an official nominal prediction for a market or, maybe most interestingly, set of markets.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Goals, Intro, Notes}
+
+We seek to generalize LMSR's pristine notion of market probability to arbitrary markets and to find the right way to quantify market confidence.
+
+\section{$\$x$ Confidence Interval Definition}
+
+Without loss of generality, consider a prediction market with an associated order book, where an order book is a list of offers to buy some quantity of `yes' or `no' securities at a certain price. 
+This captures both continuous double auctions (where the orders are placed by agents unwilling to match any existing orders) and market scoring rules (where the orders are placed by the market maker, who is always willing to trade).
+
+Let $p \in [0,1]$. 
+We say that the expected profit of $p$, $EP(p)$, is the amount that a perfectly informed trader could make by participating in the market at a single point in time, in expectation, if the true probability of the event occurring was $p$.
+
+Formally, let $y_q$ be the total number of buy orders for `yes' securities at price $q$. 
+Similarly, let $n_q$ be the total number of buy orders for `no' securities at price $q$. 
+Then
+\[ EP(p) = \sum_{q>p} y_q(q-p) + \sum_{q>1-p} n_q(q+p-1). \]
+That is, our hypothetical trader sells `yes' securities to agents willing to buy each for a price greater than their true value, $p$, and sells `no' securities to agents willing to buy each for a price greater than their true value, $1-p$.
+
+Let $x \ge 0$. 
+The $\$x$ confidence interval, $CI(x)$, contains all prices $p$ such that $EP(p) \le x$.
+\[ CI(x) = \{ p: EP(p) \le x \} \]
+The intuition for the definition is that if $p$ lies outside of the $\$x$ confidence interval, then some trader could make $\$x$ in expectation. 
+For larger values of $\$x$, this would be increasingly surprising, and we are therefore more confident that the true probability lies within the defined interval.
+
+\section{Theoretical results}
+
+We can make a few very simple observations:
+\begin{enumerate}
+\item For $y > x$, $CI(x) \subseteq CI(y)$.
+\item In a market without fees, the bid-ask spread is $CI(0)$.
+\item $CI(\infty) = [0,1]$
+\item $CI(x)$ is smaller in a market with high liquidity (deep order book) than a low-liquidity market.
+\item $CI(x)$ is larger in a market with higher fees than in a market with lower fees (for a fixed fee structure).
+\item There are probably many others fairly trivial things.
+It's not clear if there's anything theoretically meaty we can prove. 
+\end{enumerate}
+	
+Another feature is that the confidence intervals are only affected by the current order book. 
+Completed trade does not affect the confidence intervals at all. 
+One consequence of this is that, for market scoring rules, $CI(x)$ is a function only of the liquidity (and the fee structure), not the volume of past trade. 
+For CDAs, it is saying that if two traders come, trade against each other, and both exhaust their budgets, then we are no more confident in the true probability as before they traded.
+\RF{Not clear to me whether this feature is good, bad, or neither.}
+
+\appendix
+
+\section{Conversation and notes to be merged}
+
+\begin{markdown}
+
+DREEV:
+I've started looking at 
+[electionbettingodds.com](https://electionbettingodds.com/ "Election Betting Odds, aggregating Betfair and PredictIt and others")
+because they have probabilities for Brexit happening in 2019 and that got me thinking about how sites like 
+that and 
+[Predictwise](http://markets.predictwise.com/markets/ "By David Rothschild")
+turn Betfair's odds into probabilities and it occurs to me that there should be a better way than averaging back & lay or whatever. 
+Namely:
+
+Imagine God whispered the true probability, x, to you. 
+Now look at what's offered on Betfair and place hypothetical bets in whatever way maximizes your expected profit *net of fees* and assuming some reasonable discount rate. 
+So betting on something that ties up your money for some decades in the future you'd have to nominally more than double your money to break even. 
+You get the idea. 
+You can compute, as a function of x, your expected NPV of your profits, betting optimally. 
+I think that's reasonably straightforward and incorporates all the information in the order book. 
+(It should even generalize to multiple markets, like Betfair + Predictit: 
+For a given x, just eat through the order books bet by bet, always switching to whatever the next most profitable bet is in whatever market, for as long as a profitable bet exists.)
+
+Now solve for the x that minimizes that expectation. 
+I believe that's the truest market probability.
+
+ADDED: Notice that in the extreme special case of no fees, no discounting, and zero bid-ask spread in the order book, that matches the standard way to convert odds to probabilities.
+
+
+\end{markdown}
+
+\end{document}
+
