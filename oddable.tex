@@ -42,7 +42,13 @@ We may also have a reasonably principled way to pick an official nominal predict
 
 \section{Goals, Intro, Notes}
 
-We seek to generalize LMSR's pristine notion of market probability to arbitrary markets and to find the right way to quantify market confidence.
+Motivating questions:
+
+\begin{enumerate}
+\item Can we generalize LMSR's pristine notion of market probability to arbitrary markets?
+\item What's the right way to quantify market confidence?
+\end{enumerate}
+
 
 \section{$\$x$ Confidence Interval Definition}
 
@@ -90,14 +96,13 @@ For CDAs, it is saying that if two traders come, trade against each other, and b
 \begin{markdown}
 
 DREEV:
-I've started looking at 
+Sites like 
 [electionbettingodds.com](https://electionbettingodds.com/ "Election Betting Odds, aggregating Betfair and PredictIt and others")
-because they have probabilities for Brexit happening in 2019 and that got me thinking about how sites like 
-that and 
-[Predictwise](http://markets.predictwise.com/markets/ "By David Rothschild")
-turn Betfair's odds into probabilities and it occurs to me that there should be a better way than averaging back & lay or whatever. 
-Namely:
+(and previously Predictwise)
+purport to turn market odds across popular prediction markets into single probabilities.
+I think the state of the art is pretty much averaging back and lay or whatever.
 
+What about this.
 Imagine God whispered the true probability, x, to you. 
 Now look at what's offered on Betfair and place hypothetical bets in whatever way maximizes your expected profit *net of fees* and assuming some reasonable discount rate. 
 So betting on something that ties up your money for some decades in the future you'd have to nominally more than double your money to break even. 
@@ -112,6 +117,24 @@ I believe that's the truest market probability.
 
 ADDED: Notice that in the extreme special case of no fees, no discounting, and zero bid-ask spread in the order book, that matches the standard way to convert odds to probabilities.
 
+
+### Lit review
+
+1. Taleb: "Election Predictions as Martingales: An Arbitrage Approach".  
+<https://arxiv.org/pdf/1703.06351.pdf>
+2. "Arbitrage in Political Prediction Markets".   
+<http://www.bjll.org/index.php/jpm/article/view/1796>
+3. Gelman et al: "Information, incentives, and goals in election forecasts".  
+<http://www.stat.columbia.edu/~gelman/research/published/jdm200907b.pdf>
+4. Taleb vs Silver primer:  
+<https://towardsdatascience.com/why-you-should-care-about-the-nate-silver-vs-nassim-taleb-twitter-war-a581dce1f5fc>
+5. Schmitz and Rothschild: "Understanding market functionality and trading success".  
+<https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0219606>
+6. Crane and Vinson: Preregistered comparison of polls vs markets.
+<https://researchers.one/articles/Models-vs-Markets-Forecasting-the-2020-US-election/97212967bc124e2bf3af31a5>
+
+
+[MORE MERGING IN PROGRESS]
 
 \end{markdown}
 
